@@ -1,6 +1,7 @@
 
 
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block content %}
 
@@ -25,11 +26,10 @@
 
     <form method="post" action="">
         {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" class="bg-indigo-800 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Submit</button>
+        {{ form|crispy }}
+        <button type="submit" class="bg-indigo-800 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded">Update Category</button>
     </form>
 
-    <a href="{% url 'leads:lead-delete' lead.pk %}" class="w-1/2 mt-3 flex ml-auto text-white bg-red-800 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Delete</a>
 
         </div>
         <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
