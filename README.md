@@ -75,7 +75,7 @@ Ensure you have the following installed on your system:
 
 Here are some screenshots of the application:
 
-![Landing Page](screenshot/landing-page.png)
+![Landing Page](screenshots/landing-page.png)
 ![Lead List as seen by Organization](screenshots/leads-list-organization.png)
 ![Agent List as seen by Organization](screenshots/agents-list-organization.png)
 Checkout other screenshots in the screenshots folder
