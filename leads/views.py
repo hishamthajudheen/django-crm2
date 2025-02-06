@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.views.generic import CreateView, TemplateView, ListView, DetailView, DeleteView, UpdateView
+from django.views.generic import CreateView, TemplateView, ListView, DetailView, DeleteView, UpdateView, FormView
 
 from .models import Lead, Agent
-from .forms import LeadForm, LeadModelForm, CustomUserCreationForm
+from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
 from agents.mixins import OrganizerAndLoginRequiredMixin
 
 class SignupView(CreateView):
@@ -29,12 +29,24 @@ class LeadListView(LoginRequiredMixin, ListView):
         user = self.request.user        
         #initial queryset of all the leads for the entire organization
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization=user.userprofile)
+            queryset = Lead.objects.filter(organization=user.userprofile, agent__isnull=False)
         else:
             queryset = Lead.objects.filter(organization=user.agent.organization)            
             #filtering for the agent currently logged in
             queryset = queryset.filter(agent__user=self.request.user)        
         return queryset 
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super(LeadListView, self).get_context_data(**kwargs)
+        if user.is_organizer:
+            queryset = Lead.objects.filter(
+                organization=user.userprofile, 
+                agent__isnull=True
+            )
+            context.update({
+                "unassigned_leads": queryset
+            })
+        return context
 
 def lead_list(request):
     leads = Lead.objects.all()
@@ -128,3 +140,24 @@ def lead_delete(request, pk):
     lead = Lead.objects.get(id=pk)
     lead.delete()
     return redirect("/leads")
+
+class AssignAgentView(OrganizerAndLoginRequiredMixin, FormView):
+    template_name = "leads/assign_agent.html"
+    form_class = AssignAgentForm
+    
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(AssignAgentView, self).get_form_kwargs(**kwargs)
+        kwargs.update( {
+            "request": self.request
+        })
+        return kwargs
+    
+    def get_success_url(self):        
+        return reverse("leads:lead-list")
+    
+    def form_valid(self, form):
+        agent = form.cleaned_data["agent"]
+        lead = Lead.objects.get(id=self.kwargs["pk"])
+        lead.agent = agent
+        lead.save()
+        return super(AssignAgentView, self).form_valid(form)
