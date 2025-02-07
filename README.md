@@ -1,6 +1,6 @@
 # Django CRM 2
 
-Django CRM 2 is an advanced Customer Relationship Management (CRM) web application built with Django and SQLite3. It allows organizations to manage leads efficiently, assign agents, and track lead progress. The application includes role-based access, email notifications, and a clean UI styled with Tailwind CSS.
+Django CRM 2 is an advanced Customer Relationship Management (CRM) web application built with Django and PostgreSQL. It allows organizations to manage leads efficiently, assign agents, and track lead progress. The application includes role-based access, email notifications, and a clean UI styled with Tailwind CSS.
 
 ## Features
 
@@ -18,7 +18,7 @@ Django CRM 2 is an advanced Customer Relationship Management (CRM) web applicati
 - **Modern UI**  
   - Designed with Tailwind CSS and Django Crispy forms for a clean and responsive interface.
 - **Database**  
-  - Uses SQLite3 for data storage.
+  - Uses PostgreSQL for data storage.
 
 ## Installation
 
@@ -26,6 +26,7 @@ Django CRM 2 is an advanced Customer Relationship Management (CRM) web applicati
 Ensure you have the following installed on your system:
 - Python (>= 3.x)
 - pip (Python package manager)
+- PostgreSQL
 - virtualenv (recommended)
 
 ### Setup Instructions
