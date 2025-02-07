@@ -28,7 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'django-crm2.onrender.com',
+]
 
 
 # Application definition
